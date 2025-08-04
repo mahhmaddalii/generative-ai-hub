@@ -81,12 +81,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'loginRegisterLogout',
         'USER': 'postgres',
         'PASSWORD': 'admin@123',
         'HOST': 'localhost',
-        'PORT': '5432',  # Default PostgreSQL port
+        'PORT': '5432',  
         # SELECT * FROM public.auth_user
     }
 }
@@ -134,6 +134,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Authentication settings
-LOGIN_REDIRECT_URL = '/'  # Redirect to home after login
-LOGOUT_REDIRECT_URL = '/'  # Redirect to login after logout
-
+AUTH_USER_MODEL = 'accounts.CustomUser'
