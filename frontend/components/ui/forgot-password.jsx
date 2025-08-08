@@ -1,76 +1,59 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function ForgotPasswordForm() {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState(null);
-  const [error, setError] = useState(null);
+  const [email, setEmail] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage(null);
-    setError(null);
-
     try {
-      const res = await fetch('http://localhost:8000/api/forgot-password/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await fetch("http://127.0.0.1:8000/api/forgot-password/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
 
-      const data = await res.json();
+      const data = await response.json();
 
-      if (res.ok) {
-        setMessage(data.message || 'Password reset link sent to your email.');
+      if (response.ok) {
+        alert("Password reset email sent!");
       } else {
-        setError(data.error || 'Something went wrong. Please try again.');
+        alert(data.error || "Unable to send reset email.");
       }
-    } catch (err) {
-      setError('Failed to connect to the server.');
+    } catch (error) {
+      console.error("Forgot Password error:", error);
+      alert("Something went wrong.");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/* Email Input */}
-      <div className="mb-3">
-        <label htmlFor="email" className="form-label text-white">
-          Enter your registered email
+    <form onSubmit={handleSubmit} className="flex flex-col text-center w-full">
+      <h3 className="text-4xl font-extrabold text-gray-900 mb-3">Forgot Password</h3>
+      <p className="text-gray-700 mb-6">Enter your registered email</p>
+
+      <div className="text-left mb-4">
+        <label htmlFor="email" className="block text-sm text-gray-900 mb-1">
+          Email
         </label>
         <input
-          type="email"
-          className="form-control bg-dark text-white border-secondary"
           id="email"
-          placeholder="Enter email"
-          required
+          name="email"
+          type="email"
+          placeholder="you@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full px-5 py-3 text-sm text-gray-900 bg-gray-100 rounded-2xl outline-none focus:bg-gray-200"
         />
       </div>
 
-      {/* Success/Error Message */}
-      {message && <div className="alert alert-success">{message}</div>}
-      {error && <div className="alert alert-danger">{error}</div>}
-
-      {/* Submit Button */}
-      <div className="d-flex justify-content-center mt-3">
-        <button type="submit" className="btn btn-sm btn-primary px-4">
-          Send Reset Link
-        </button>
-      </div>
-
-      {/* Back to login */}
-      <div className="text-center mt-3">
-        <small className="text-white">
-          Remember your password?{' '}
-          <a href="/login" className="text-info text-decoration-underline">
-            Back to login
-          </a>
-        </small>
-      </div>
+      <button
+        type="submit"
+        className="w-full py-3 text-white bg-purple-600 hover:bg-purple-700 rounded-2xl font-bold transition"
+      >
+        Send Reset Link
+      </button>
     </form>
   );
 }

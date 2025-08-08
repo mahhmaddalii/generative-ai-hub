@@ -1,4 +1,4 @@
-// File: C:\Users\Muhammad Ali\fyp\Fyp\frontend\app\login\page.jsx
+// File: D:\fyp\generative-ai-hub-main\generative-ai-hub\frontend\app\login\page.jsx
 import * as entry from '../../../../app/login/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
