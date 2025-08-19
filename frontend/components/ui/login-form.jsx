@@ -4,29 +4,32 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { API_URL, setTokens, fetchWithAuth, logoutUser } from "../../utils/auth.js";
+
 
 export default function LoginForm() {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const togglePasswordVisibility = () => setShowPassword(prev => !prev);
+  const togglePasswordVisibility = () =>
+    setShowPassword((prev) => !prev);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/login/", {
+      const response = await fetch(`${API_URL}/login/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -35,8 +38,10 @@ export default function LoginForm() {
       const data = await response.json();
 
       if (response.ok) {
+        // ✅ Store JWT tokens
+        setTokens({ access: data.access, refresh: data.refresh });
         alert("Login successful!");
-        router.push("/chat");
+        router.push("/chat"); // redirect after login
       } else {
         alert(data.error || "Invalid credentials. Try again.");
       }
@@ -56,11 +61,7 @@ export default function LoginForm() {
           href="#"
           className="flex items-center justify-center w-full py-3 mb-6 text-sm font-medium text-gray-900 bg-gray-200 rounded-2xl hover:bg-gray-300 transition"
         >
-          <img
-            src="/logo-google.png"
-            alt="Google"
-            className="h-5 mr-2"
-          />
+          <img src="/logo-google.png" alt="Google" className="h-5 mr-2" />
           Continue with Google
         </a>
 
@@ -105,11 +106,7 @@ export default function LoginForm() {
             onClick={togglePasswordVisibility}
             className="absolute top-9 right-4 text-gray-500 hover:text-gray-700"
           >
-            {showPassword ? (
-              <EyeSlashIcon className="h-5 w-5" />
-            ) : (
-              <EyeIcon className="h-5 w-5" />
-            )}
+            {showPassword ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
           </button>
         </div>
 

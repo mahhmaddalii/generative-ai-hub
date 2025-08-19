@@ -1,4 +1,4 @@
-// File: D:\fyp\generative-ai-hub-main\generative-ai-hub\frontend\app\forgotpassword\page.jsx
+// File: C:\Users\Muhammad Ali\fyp\generative-ai-hub\frontend\app\forgotpassword\page.jsx
 import * as entry from '../../../../app/forgotpassword/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

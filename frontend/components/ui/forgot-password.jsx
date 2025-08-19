@@ -1,14 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import { API_URL, setTokens, fetchWithAuth, logoutUser } from "../../utils/auth.js";
 
 export default function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState(""); // success message
+  const [error, setError] = useState(""); // error message
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
+    setError("");
+
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/forgot-password/", {
+      const response = await fetch(`${API_URL}/forgot-password/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -17,13 +23,13 @@ export default function ForgotPasswordForm() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Password reset email sent!");
+        setMessage("Password reset email sent!");
       } else {
-        alert(data.error || "Unable to send reset email.");
+        setError(data.error || "Unable to send reset email.");
       }
-    } catch (error) {
-      console.error("Forgot Password error:", error);
-      alert("Something went wrong.");
+    } catch (err) {
+      console.error("Forgot Password error:", err);
+      setError("Something went wrong.");
     }
   };
 
@@ -54,6 +60,9 @@ export default function ForgotPasswordForm() {
       >
         Send Reset Link
       </button>
+
+      {message && <p className="text-green-600 text-sm mt-4">{message}</p>}
+      {error && <p className="text-red-600 text-sm mt-4">{error}</p>}
     </form>
   );
 }
