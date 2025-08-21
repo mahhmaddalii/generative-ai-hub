@@ -16,9 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from accounts.api.views import chat_view
+from accounts.api.views import upload_document
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('accounts.api.urls')),  
+    path('chat/', chat_view),      # define the route here
+    path('upload_document/', upload_document),
 ]
 

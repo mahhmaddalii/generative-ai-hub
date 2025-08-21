@@ -1,4 +1,4 @@
-// File: C:\Users\Muhammad Ali\fyp\generative-ai-hub\frontend\app\chat\page.jsx
+// File: D:\generative-ai-hub\frontend\app\chat\page.tsx
 import * as entry from '../../../../app/chat/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

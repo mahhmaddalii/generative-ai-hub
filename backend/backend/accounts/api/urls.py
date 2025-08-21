@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     path('signup/', views.signup_view, name='signup'),
-    path('login/', views.login_view, name='login'),  # updated login_view will return JWT
+    path('login/', views.login_view, name='login'),
+    
 ]

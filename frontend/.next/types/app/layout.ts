@@ -1,4 +1,4 @@
-// File: C:\Users\Muhammad Ali\fyp\generative-ai-hub\frontend\app\layout.jsx
+// File: D:\generative-ai-hub\frontend\app\layout.jsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
