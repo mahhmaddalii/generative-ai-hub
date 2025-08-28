@@ -9,21 +9,25 @@ export default function LoginForm() {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: ""
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
-  const togglePasswordVisibility = () => setShowPassword(prev => !prev);
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
+    setError("");
 
     try {
       const response = await fetch("http://127.0.0.1:8000/api/login/", {
@@ -35,14 +39,14 @@ export default function LoginForm() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Login successful!");
-        router.push("/chat");
+        setMessage("Login successful! Redirecting...");
+        setTimeout(() => router.push("/chat"), 1500);
       } else {
-        alert(data.error || "Invalid credentials. Try again.");
+        setError(data.error || "Invalid credentials. Try again.");
       }
     } catch (error) {
       console.error("Login error:", error);
-      alert("Something went wrong.");
+      setError("Something went wrong. Please try again.");
     }
   };
 
@@ -56,11 +60,7 @@ export default function LoginForm() {
           href="#"
           className="flex items-center justify-center w-full py-3 mb-6 text-sm font-medium text-gray-900 bg-gray-200 rounded-2xl hover:bg-gray-300 transition"
         >
-          <img
-            src="/logo-google.png"
-            alt="Google"
-            className="h-5 mr-2"
-          />
+          <img src="/logo-google.png" alt="Google" className="h-5 mr-2" />
           Continue with Google
         </a>
 
@@ -72,7 +72,7 @@ export default function LoginForm() {
 
         <div className="text-left mb-4">
           <label htmlFor="email" className="block text-sm text-gray-900 mb-1">
-            Email*
+            Email
           </label>
           <input
             id="email"
@@ -88,7 +88,7 @@ export default function LoginForm() {
 
         <div className="text-left mb-4 relative">
           <label htmlFor="password" className="block text-sm text-gray-900 mb-1">
-            Password*
+            Password
           </label>
           <input
             id="password"
@@ -112,6 +112,10 @@ export default function LoginForm() {
             )}
           </button>
         </div>
+
+        {/* Success or Error Messages */}
+        {message && <p className="text-green-600 text-sm mb-4">{message}</p>}
+        {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
 
         <div className="flex justify-between items-center text-sm mb-6">
           <label className="flex items-center space-x-2">

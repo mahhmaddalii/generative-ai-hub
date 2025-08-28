@@ -18,6 +18,7 @@ export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [formMessage, setFormMessage] = useState({ type: "", text: "" });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,6 +41,8 @@ export default function SignupForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setFormMessage({ type: "", text: "" });
 
     // Final password match check
     if (formData.password !== formData.confirmPassword) {
@@ -65,14 +68,29 @@ export default function SignupForm() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Registration successful!");
-        router.push("/login");
+        setFormMessage({
+          type: "success",
+          text: "✅ Registration successful! You can now log in."
+        });
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          confirmPassword: ""
+        });
       } else {
-        alert(data.error || "Registration failed. Try again.");
+        setFormMessage({
+          type: "error",
+          text: data.error || "❌ Account with this email already exists."
+        });
       }
     } catch (error) {
       console.error("Signup error:", error);
-      alert("Something went wrong.");
+      setFormMessage({
+        type: "error",
+        text: "❌ Something went wrong. Please try again."
+      });
     }
   };
 
@@ -81,7 +99,7 @@ export default function SignupForm() {
       <h3 className="text-4xl font-extrabold text-gray-900 mb-3">Sign Up</h3>
       <p className="text-gray-700 mb-6">Create your new account</p>
 
-  {/* First + Last Name */}
+      {/* First + Last Name */}
       <div className="flex gap-4 mb-4">
         <div className="w-1/2 text-left">
           <label htmlFor="firstName" className="block text-sm text-gray-900 mb-1">First Name:</label>
@@ -180,6 +198,17 @@ export default function SignupForm() {
           <p className="text-red-600 text-sm mt-2">{errors.confirmPassword}</p>
         )}
       </div>
+
+      {/* Success or Error Message */}
+      {formMessage.text && (
+        <p
+          className={`text-sm mb-4 ${
+            formMessage.type === "error" ? "text-red-600" : "text-green-600"
+          }`}
+        >
+          {formMessage.text}
+        </p>
+      )}
 
       {/* Submit Button */}
       <button
