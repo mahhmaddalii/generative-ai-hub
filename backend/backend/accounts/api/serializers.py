@@ -1,3 +1,4 @@
+# backend/accounts/api/serializers.py
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
@@ -8,12 +9,6 @@ class SignupSerializer(serializers.Serializer):
     lastName = serializers.CharField(max_length=100)
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
-    confirmPassword = serializers.CharField(write_only=True)
-
-    def validate(self, data):
-        if data['password'] != data['confirmPassword']:
-            raise serializers.ValidationError("Passwords do not match")
-        return data
 
     def create(self, validated_data):
         user = User.objects.create_user(

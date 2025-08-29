@@ -18,3 +18,5 @@
 /backend/backend/backend/_pycache_/
 /backend/backend/backend/_pycache_
 
+__pycache__*
+
