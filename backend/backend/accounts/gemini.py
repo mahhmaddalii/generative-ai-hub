@@ -1,5 +1,5 @@
 from langchain.chat_models import init_chat_model
-from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_tavily import TavilySearch
 from langchain_core.chat_history import InMemoryChatMessageHistory
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.agents import AgentExecutor, create_openai_tools_agent
@@ -12,7 +12,7 @@ os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
 os.environ["TAVILY_API_KEY"] = os.getenv("TAVILY_API_KEY")
 
 chat_history = InMemoryChatMessageHistory()
-search_tool = TavilySearchResults(max_results=3)  # little more generous
+search_tool = TavilySearch(max_results=3)  # little more generous
 model = init_chat_model("gemini-2.0-flash", model_provider="google_genai")
 
 # ✅ Stronger system message

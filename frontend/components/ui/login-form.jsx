@@ -4,20 +4,31 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { API_URL, setTokens, fetchWithAuth, logoutUser } from "../../utils/auth.js";
+
 
 export default function LoginForm() {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
     email: "",
+<<<<<<< HEAD
+    password: "",
+=======
     password: ""
+>>>>>>> f19996e2b0817d81fbf40874e447246660032f9f
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
+<<<<<<< HEAD
+  const togglePasswordVisibility = () =>
+    setShowPassword((prev) => !prev);
+=======
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
+>>>>>>> f19996e2b0817d81fbf40874e447246660032f9f
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,7 +41,7 @@ export default function LoginForm() {
     setError("");
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/login/", {
+      const response = await fetch(`${API_URL}/login/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -39,8 +50,15 @@ export default function LoginForm() {
       const data = await response.json();
 
       if (response.ok) {
+<<<<<<< HEAD
+        // ✅ Store JWT tokens
+        setTokens({ access: data.access, refresh: data.refresh });
+        alert("Login successful!");
+        router.push("/chat"); // redirect after login
+=======
         setMessage("Login successful! Redirecting...");
         setTimeout(() => router.push("/chat"), 1500);
+>>>>>>> f19996e2b0817d81fbf40874e447246660032f9f
       } else {
         setError(data.error || "Invalid credentials. Try again.");
       }
@@ -105,11 +123,7 @@ export default function LoginForm() {
             onClick={togglePasswordVisibility}
             className="absolute top-9 right-4 text-gray-500 hover:text-gray-700"
           >
-            {showPassword ? (
-              <EyeSlashIcon className="h-5 w-5" />
-            ) : (
-              <EyeIcon className="h-5 w-5" />
-            )}
+            {showPassword ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
           </button>
         </div>
 

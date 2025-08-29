@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { API_URL, setTokens, fetchWithAuth, logoutUser } from "../../utils/auth.js";
 
 export default function SignupForm() {
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function SignupForm() {
     lastName: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -22,10 +23,9 @@ export default function SignupForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Real-time validation
+    // Real-time password match validation
     let newErrors = { ...errors };
     if (name === "confirmPassword" || name === "password") {
       if (name === "confirmPassword" && value !== formData.password) {
@@ -54,20 +54,29 @@ export default function SignupForm() {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/register/", {
+      const response = await fetch(`${API_URL}/signup/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          first_name: formData.firstName,
-          last_name: formData.lastName,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
           email: formData.email,
-          password: formData.password
+          password: formData.password,
         }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
+<<<<<<< HEAD
+        // ✅ Immediately store JWT tokens after signup
+        if (data.access && data.refresh) {
+          setTokens({ access: data.access, refresh: data.refresh });
+        }
+
+        alert("Registration successful!");
+        router.push("/chat"); // redirect after signup
+=======
         setFormMessage({
           type: "success",
           text: "✅ Registration successful! You can now log in."
@@ -79,6 +88,7 @@ export default function SignupForm() {
           password: "",
           confirmPassword: ""
         });
+>>>>>>> f19996e2b0817d81fbf40874e447246660032f9f
       } else {
         setFormMessage({
           type: "error",
@@ -131,9 +141,7 @@ export default function SignupForm() {
 
       {/* Email */}
       <div className="text-left mb-4">
-        <label htmlFor="email" className="block text-sm text-gray-900 mb-1">
-          Email:
-        </label>
+        <label htmlFor="email" className="block text-sm text-gray-900 mb-1">Email:</label>
         <input
           id="email"
           name="email"
@@ -148,9 +156,7 @@ export default function SignupForm() {
 
       {/* Password */}
       <div className="text-left mb-4 relative">
-        <label htmlFor="password" className="block text-sm text-gray-900 mb-1">
-          Password:
-        </label>
+        <label htmlFor="password" className="block text-sm text-gray-900 mb-1">Password:</label>
         <input
           id="password"
           name="password"
@@ -172,9 +178,7 @@ export default function SignupForm() {
 
       {/* Confirm Password */}
       <div className="text-left mb-4 relative">
-        <label htmlFor="confirmPassword" className="block text-sm text-gray-900 mb-1">
-          Confirm Password:
-        </label>
+        <label htmlFor="confirmPassword" className="block text-sm text-gray-900 mb-1">Confirm Password:</label>
         <input
           id="confirmPassword"
           name="confirmPassword"
@@ -193,7 +197,6 @@ export default function SignupForm() {
           {showConfirmPassword ? "Hide" : "Show"}
         </button>
 
-        {/* Show validation error below confirm password */}
         {errors.confirmPassword && (
           <p className="text-red-600 text-sm mt-2">{errors.confirmPassword}</p>
         )}
@@ -220,9 +223,7 @@ export default function SignupForm() {
 
       <p className="text-sm text-gray-900 mt-6">
         Already have an account?{" "}
-        <Link href="/login" className="font-bold text-gray-700 hover:underline">
-          Sign In
-        </Link>
+        <Link href="/login" className="font-bold text-gray-700 hover:underline">Sign In</Link>
       </p>
     </form>
   );
